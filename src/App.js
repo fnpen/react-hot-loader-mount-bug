@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { hot } from 'react-hot-loader';
+
+import asyncLoader from './asyncLoader';
 import './App.css';
 
 class App extends Component {
+  state = { hidden: false };
+
+  onClick = () => {
+    this.setState({ hidden: !this.state.hidden });
+  }
+
   render() {
+    const { hidden } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div className="App-intro">
+          <button onClick={this.onClick}>Toggle visibility</button>
+          { !hidden ? React.createElement(asyncLoader(() => import('./AsyncText'))) : null }
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+export default hot(module)(App);
